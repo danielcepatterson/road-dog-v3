@@ -221,7 +221,8 @@ function App() {
 				{isFormExpanded ? '− Hide Form' : '+ Add New Show'}
 			</button>
 
-			{isFormExpanded && (			<div className="form-container">
+		{isFormExpanded && (
+			<div className="form-container">
 				<h2>Add New Show</h2>
 				<form onSubmit={handleSubmit}>
 					<div className="form-section">
@@ -526,7 +527,7 @@ function App() {
 							.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 							.map((show) => (
 								<div key={show.id} className="show-card">
-								<div className="show-header" onClick={() => toggleShowExpanded(show.id)}>
+									<div className="show-header" onClick={() => toggleShowExpanded(show.id)}>
 									<div className="show-title">
 										<span className="expand-icon">{expandedShows.has(show.id) ? '▼' : '▶'}</span>
 										<h3>{show.artist} @ {show.venue}</h3>
@@ -541,7 +542,9 @@ function App() {
 										>
 											×
 										</button>
-									</div>								{expandedShows.has(show.id) && (									<div className="show-details">
+									</div>
+						{expandedShows.has(show.id) && (
+							<div className="show-details">
 										<div className="detail-section">
 											<p>
 												<strong>📅 Date:</strong>{" "}
@@ -582,6 +585,9 @@ function App() {
 										{show.soundCheckTime && <p><strong>🎚️ Sound Check:</strong> {formatTimeTo12Hour(show.soundCheckTime)}</p>}
 										{show.doorsTime && <p><strong>🚪 Doors:</strong> {formatTimeTo12Hour(show.doorsTime)}</p>}
 										{show.performanceTime && <p><strong>🎤 Performance:</strong> {formatTimeTo12Hour(show.performanceTime)}</p>}
+											</div>
+										)}
+
 										{(show.backlineDrums || show.backlineBass || show.sound) && (
 											<div className="detail-section">
 												<p className="section-title"><strong>Technical</strong></p>
@@ -618,10 +624,10 @@ function App() {
 									</div>
 								)}
 							</div>
-							))}
-					</div>
-				)}
-			</div>
+						))}
+						</div>
+					)}
+				</div>
 
 			<div className="calendar-container">
 				<div className="calendar-header">
