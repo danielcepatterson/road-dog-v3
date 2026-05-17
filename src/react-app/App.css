@@ -29,6 +29,25 @@
 	font-size: 1.5rem;
 }
 
+.form-section {
+	margin-bottom: 2rem;
+	padding-bottom: 2rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-section:last-of-type {
+	border-bottom: none;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.form-section h3 {
+	margin-top: 0;
+	margin-bottom: 1rem;
+	font-size: 1.2rem;
+	color: #646cff;
+}
+
 form {
 	display: flex;
 	flex-direction: column;
@@ -168,6 +187,27 @@ form {
 	margin: 0;
 	text-align: left;
 	line-height: 1.6;
+}
+
+.detail-section {
+	margin-bottom: 1.5rem;
+	padding-bottom: 1rem;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.detail-section:last-child {
+	border-bottom: none;
+	margin-bottom: 0;
+	padding-bottom: 0;
+}
+
+.section-title {
+	color: #646cff !important;
+	font-size: 1rem;
+	margin-bottom: 0.75rem !important;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	font-size: 0.85rem;
 }
 
 .show-notes {
