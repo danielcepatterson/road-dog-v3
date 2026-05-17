@@ -33,6 +33,7 @@ function App() {
 	const [shows, setShows] = useState<Show[]>([]);
 	const [currentMonth, setCurrentMonth] = useState(new Date());
 	const [expandedShows, setExpandedShows] = useState<Set<string>>(new Set());
+	const [isFormExpanded, setIsFormExpanded] = useState(false);
 	const [formData, setFormData] = useState({
 		date: "",
 		venue: "",
@@ -112,6 +113,8 @@ function App() {
 			contract: "",
 			notes: "",
 		});
+		// Collapse form after submission
+		setIsFormExpanded(false);
 	};
 
 	const handleDelete = (id: string) => {
@@ -130,6 +133,15 @@ function App() {
 			}
 			return newSet;
 		});
+	};
+
+	const formatTimeTo12Hour = (time24: string) => {
+		if (!time24) return "";
+		const [hours, minutes] = time24.split(":");
+		const hour = parseInt(hours, 10);
+		const ampm = hour >= 12 ? "PM" : "AM";
+		const hour12 = hour % 12 || 12;
+		return `${hour12}:${minutes} ${ampm}`;
 	};
 
 	const getDaysInMonth = (date: Date) => {
@@ -184,10 +196,10 @@ function App() {
 					{dayShows.length > 0 && (
 						<div className="calendar-shows">
 							{dayShows.map((show) => (
-								<div key={show.id} className="calendar-show" title={`${show.artist} at ${show.venue}${show.performanceTime ? ` - ${show.performanceTime}` : ''}`}>
+								<div key={show.id} className="calendar-show" title={`${show.artist} at ${show.venue}${show.performanceTime ? ` - ${formatTimeTo12Hour(show.performanceTime)}` : ''}`}>
 									<div className="calendar-show-artist">{show.artist}</div>
 									<div className="calendar-show-venue">{show.venue}</div>
-									{show.performanceTime && <div className="calendar-show-time">🎤 {show.performanceTime}</div>}
+									{show.performanceTime && <div className="calendar-show-time">🎤 {formatTimeTo12Hour(show.performanceTime)}</div>}
 								</div>
 							))}
 						</div>
@@ -202,8 +214,14 @@ function App() {
 	return (
 		<div className="app-container">
 			<h1>🎸 Show Booking Manager</h1>
+			<button 
+				className="add-show-toggle-btn"
+				onClick={() => setIsFormExpanded(!isFormExpanded)}
+			>
+				{isFormExpanded ? '− Hide Form' : '+ Add New Show'}
+			</button>
 
-			<div className="form-container">
+			{isFormExpanded && (			<div className="form-container">
 				<h2>Add New Show</h2>
 				<form onSubmit={handleSubmit}>
 					<div className="form-section">
@@ -496,6 +514,7 @@ function App() {
 					</button>
 				</form>
 			</div>
+			)}
 
 			<div className="shows-container">
 				<h2>Booked Shows ({shows.length})</h2>
@@ -559,13 +578,10 @@ function App() {
 										{(show.loadInTime || show.soundCheckTime || show.doorsTime || show.performanceTime) && (
 											<div className="detail-section">
 												<p className="section-title"><strong>Schedule</strong></p>
-												{show.loadInTime && <p><strong>🚚 Load In:</strong> {show.loadInTime}</p>}
-												{show.soundCheckTime && <p><strong>🎚️ Sound Check:</strong> {show.soundCheckTime}</p>}
-												{show.doorsTime && <p><strong>🚪 Doors:</strong> {show.doorsTime}</p>}
-												{show.performanceTime && <p><strong>🎤 Performance:</strong> {show.performanceTime}</p>}
-											</div>
-										)}
-
+										{show.loadInTime && <p><strong>🚚 Load In:</strong> {formatTimeTo12Hour(show.loadInTime)}</p>}
+										{show.soundCheckTime && <p><strong>🎚️ Sound Check:</strong> {formatTimeTo12Hour(show.soundCheckTime)}</p>}
+										{show.doorsTime && <p><strong>🚪 Doors:</strong> {formatTimeTo12Hour(show.doorsTime)}</p>}
+										{show.performanceTime && <p><strong>🎤 Performance:</strong> {formatTimeTo12Hour(show.performanceTime)}</p>}
 										{(show.backlineDrums || show.backlineBass || show.sound) && (
 											<div className="detail-section">
 												<p className="section-title"><strong>Technical</strong></p>

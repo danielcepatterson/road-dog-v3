@@ -15,6 +15,29 @@
 	color: #646cff;
 }
 
+.add-show-toggle-btn {
+	display: block;
+	width: 100%;
+	max-width: 300px;
+	margin: 0 auto 2rem;
+	padding: 1rem 2rem;
+	background: #646cff;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 1.1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s;
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.add-show-toggle-btn:hover {
+	background: #535bf2;
+	transform: translateY(-2px);
+	box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
 .form-container {
 	background: rgba(255, 255, 255, 0.05);
 	padding: 2rem;
