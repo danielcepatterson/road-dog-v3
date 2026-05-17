@@ -16,6 +16,7 @@ interface Show {
 
 function App() {
 	const [shows, setShows] = useState<Show[]>([]);
+	const [currentMonth, setCurrentMonth] = useState(new Date());
 	const [formData, setFormData] = useState({
 		date: "",
 		venue: "",
@@ -71,6 +72,72 @@ function App() {
 		setShows((prev) => prev.filter((show) => show.id !== id));
 		const updatedShows = shows.filter((show) => show.id !== id);
 		localStorage.setItem("bookedShows", JSON.stringify(updatedShows));
+	};
+
+	const getDaysInMonth = (date: Date) => {
+		const year = date.getFullYear();
+		const month = date.getMonth();
+		return new Date(year, month + 1, 0).getDate();
+	};
+
+	const getFirstDayOfMonth = (date: Date) => {
+		const year = date.getFullYear();
+		const month = date.getMonth();
+		return new Date(year, month, 1).getDay();
+	};
+
+	const getShowsForDate = (dateStr: string) => {
+		return shows.filter((show) => show.date === dateStr);
+	};
+
+	const previousMonth = () => {
+		setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() - 1));
+	};
+
+	const nextMonth = () => {
+		setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth() + 1));
+	};
+
+	const goToToday = () => {
+		setCurrentMonth(new Date());
+	};
+
+	const renderCalendar = () => {
+		const daysInMonth = getDaysInMonth(currentMonth);
+		const firstDay = getFirstDayOfMonth(currentMonth);
+		const days = [];
+		const year = currentMonth.getFullYear();
+		const month = currentMonth.getMonth();
+
+		// Add empty cells for days before the first day of the month
+		for (let i = 0; i < firstDay; i++) {
+			days.push(<div key={`empty-${i}`} className="calendar-day empty" />);
+		}
+
+		// Add cells for each day of the month
+		for (let day = 1; day <= daysInMonth; day++) {
+			const dateStr = `${year}-${String(month + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+			const dayShows = getShowsForDate(dateStr);
+			const isToday = new Date().toDateString() === new Date(year, month, day).toDateString();
+
+			days.push(
+				<div key={day} className={`calendar-day ${isToday ? "today" : ""} ${dayShows.length > 0 ? "has-shows" : ""}`}>
+					<div className="calendar-day-number">{day}</div>
+					{dayShows.length > 0 && (
+						<div className="calendar-shows">
+							{dayShows.map((show) => (
+								<div key={show.id} className="calendar-show" title={`${show.artist} at ${show.venue}`}>
+									<div className="calendar-show-artist">{show.artist}</div>
+									<div className="calendar-show-venue">{show.venue}</div>
+								</div>
+							))}
+						</div>
+					)}
+				</div>
+			);
+		}
+
+		return days;
 	};
 
 	return (
@@ -228,6 +295,39 @@ function App() {
 							))}
 					</div>
 				)}
+			</div>
+
+			<div className="calendar-container">
+				<div className="calendar-header">
+					<h2>📅 Calendar View</h2>
+					<div className="calendar-controls">
+						<button onClick={previousMonth} className="month-nav-btn">
+							← Prev
+						</button>
+						<button onClick={goToToday} className="today-btn">
+							Today
+						</button>
+						<span className="current-month">
+							{currentMonth.toLocaleDateString("en-US", { month: "long", year: "numeric" })}
+						</span>
+						<button onClick={nextMonth} className="month-nav-btn">
+							Next →
+						</button>
+					</div>
+				</div>
+
+				<div className="calendar">
+					<div className="calendar-weekdays">
+						<div className="weekday">Sun</div>
+						<div className="weekday">Mon</div>
+						<div className="weekday">Tue</div>
+						<div className="weekday">Wed</div>
+						<div className="weekday">Thu</div>
+						<div className="weekday">Fri</div>
+						<div className="weekday">Sat</div>
+					</div>
+					<div className="calendar-days">{renderCalendar()}</div>
+				</div>
 			</div>
 		</div>
 	);
