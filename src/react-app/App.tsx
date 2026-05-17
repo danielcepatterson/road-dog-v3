@@ -32,6 +32,7 @@ interface Show {
 function App() {
 	const [shows, setShows] = useState<Show[]>([]);
 	const [currentMonth, setCurrentMonth] = useState(new Date());
+	const [expandedShows, setExpandedShows] = useState<Set<string>>(new Set());
 	const [formData, setFormData] = useState({
 		date: "",
 		venue: "",
@@ -119,6 +120,18 @@ function App() {
 		localStorage.setItem("bookedShows", JSON.stringify(updatedShows));
 	};
 
+	const toggleShowExpanded = (id: string) => {
+		setExpandedShows((prev) => {
+			const newSet = new Set(prev);
+			if (newSet.has(id)) {
+				newSet.delete(id);
+			} else {
+				newSet.add(id);
+			}
+			return newSet;
+		});
+	};
+
 	const getDaysInMonth = (date: Date) => {
 		const year = date.getFullYear();
 		const month = date.getMonth();
@@ -171,9 +184,10 @@ function App() {
 					{dayShows.length > 0 && (
 						<div className="calendar-shows">
 							{dayShows.map((show) => (
-								<div key={show.id} className="calendar-show" title={`${show.artist} at ${show.venue}`}>
+								<div key={show.id} className="calendar-show" title={`${show.artist} at ${show.venue}${show.performanceTime ? ` - ${show.performanceTime}` : ''}`}>
 									<div className="calendar-show-artist">{show.artist}</div>
 									<div className="calendar-show-venue">{show.venue}</div>
+									{show.performanceTime && <div className="calendar-show-time">🎤 {show.performanceTime}</div>}
 								</div>
 							))}
 						</div>
@@ -493,17 +507,22 @@ function App() {
 							.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
 							.map((show) => (
 								<div key={show.id} className="show-card">
-									<div className="show-header">
-										<h3>{show.artist}</h3>
-										<button
-											className="delete-btn"
-											onClick={() => handleDelete(show.id)}
+								<div className="show-header" onClick={() => toggleShowExpanded(show.id)}>
+									<div className="show-title">
+										<span className="expand-icon">{expandedShows.has(show.id) ? '▼' : '▶'}</span>
+										<h3>{show.artist} @ {show.venue}</h3>
+									</div>
+									<button
+										className="delete-btn"
+										onClick={(e) => {
+											e.stopPropagation();
+											handleDelete(show.id);
+										}}
 											aria-label="Delete show"
 										>
 											×
 										</button>
-									</div>
-									<div className="show-details">
+									</div>								{expandedShows.has(show.id) && (									<div className="show-details">
 										<div className="detail-section">
 											<p>
 												<strong>📅 Date:</strong>{" "}
