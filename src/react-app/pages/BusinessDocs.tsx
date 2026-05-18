@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom';
 import '../App.css';
 
-function BusinessDocs() {
+interface BusinessDocsProps {
+	onLogout: () => void;
+}
+
+function BusinessDocs({ onLogout }: BusinessDocsProps) {
 	return (
 		<div className="app-container">
 			<div className="page-header">
-				<Link to="/" className="back-link">← Back to Home</Link>
+				<div className="header-top">
+					<Link to="/" className="back-link">← Back to Home</Link>
+					<button onClick={onLogout} className="logout-btn-small">Logout</button>
+				</div>
 				<h1>business docs</h1>
 			</div>
 			<div className="coming-soon">

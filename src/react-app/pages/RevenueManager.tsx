@@ -1,11 +1,18 @@
 import { Link } from 'react-router-dom';
 import '../App.css';
 
-function RevenueManager() {
+interface RevenueManagerProps {
+	onLogout: () => void;
+}
+
+function RevenueManager({ onLogout }: RevenueManagerProps) {
 	return (
 		<div className="app-container">
 			<div className="page-header">
-				<Link to="/" className="back-link">← Back to Home</Link>
+				<div className="header-top">
+					<Link to="/" className="back-link">← Back to Home</Link>
+					<button onClick={onLogout} className="logout-btn-small">Logout</button>
+				</div>
 				<h1>revenue manager</h1>
 			</div>
 			<div className="coming-soon">

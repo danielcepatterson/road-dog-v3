@@ -1,0 +1,113 @@
+.login-container {
+	min-height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 2rem;
+	background: linear-gradient(135deg, rgba(100, 108, 255, 0.1) 0%, rgba(100, 108, 255, 0.05) 100%);
+}
+
+.login-box {
+	background: rgba(255, 255, 255, 0.05);
+	border: 2px solid rgba(255, 255, 255, 0.1);
+	border-radius: 16px;
+	padding: 3rem;
+	width: 100%;
+	max-width: 400px;
+	box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+}
+
+.login-box h1 {
+	text-align: center;
+	color: #646cff;
+	margin-bottom: 0.5rem;
+	font-size: 2.5rem;
+}
+
+.login-subtitle {
+	text-align: center;
+	color: rgba(255, 255, 255, 0.7);
+	margin-bottom: 2rem;
+	font-size: 1rem;
+}
+
+.login-box form {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.login-box .form-group {
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.login-box label {
+	font-weight: 600;
+	font-size: 0.9rem;
+	color: rgba(255, 255, 255, 0.9);
+}
+
+.login-box input {
+	padding: 0.875rem;
+	background: rgba(255, 255, 255, 0.05);
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 8px;
+	color: white;
+	font-size: 1rem;
+	transition: all 0.3s;
+}
+
+.login-box input:focus {
+	outline: none;
+	border-color: #646cff;
+	background: rgba(255, 255, 255, 0.08);
+}
+
+.login-box input::placeholder {
+	color: rgba(255, 255, 255, 0.4);
+}
+
+.error-message {
+	background: rgba(255, 59, 59, 0.2);
+	color: #ff3b3b;
+	padding: 0.75rem;
+	border-radius: 6px;
+	text-align: center;
+	font-size: 0.9rem;
+	border: 1px solid rgba(255, 59, 59, 0.3);
+}
+
+.login-btn {
+	padding: 1rem;
+	background: #646cff;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.3s;
+	margin-top: 0.5rem;
+}
+
+.login-btn:hover {
+	background: #535bf2;
+	transform: translateY(-2px);
+	box-shadow: 0 4px 12px rgba(100, 108, 255, 0.4);
+}
+
+.login-btn:active {
+	transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+	.login-box {
+		padding: 2rem 1.5rem;
+	}
+	
+	.login-box h1 {
+		font-size: 2rem;
+	}
+}

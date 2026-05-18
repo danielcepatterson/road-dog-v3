@@ -15,6 +15,28 @@
 	margin-bottom: 2rem;
 }
 
+.header-top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.logout-btn-small {
+	background: rgba(255, 59, 59, 0.2);
+	color: #ff3b3b;
+	border: 1px solid rgba(255, 59, 59, 0.3);
+	padding: 0.4rem 0.8rem;
+	border-radius: 6px;
+	font-size: 0.85rem;
+	cursor: pointer;
+	transition: all 0.3s;
+}
+
+.logout-btn-small:hover {
+	background: rgba(255, 59, 59, 0.3);
+	border-color: #ff3b3b;
+}
+
 .back-link {
 	color: #646cff;
 	text-decoration: none;
@@ -587,4 +609,37 @@ form {
 	padding: 4rem 2rem;
 	color: rgba(255, 255, 255, 0.7);
 	font-size: 1.2rem;
+}
+
+.error-banner {
+	background: rgba(255, 59, 59, 0.2);
+	color: #ff3b3b;
+	padding: 1rem 1.5rem;
+	border-radius: 8px;
+	border: 1px solid rgba(255, 59, 59, 0.3);
+	margin: 1rem 0;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.error-close {
+	background: none;
+	border: none;
+	color: #ff3b3b;
+	font-size: 1.5rem;
+	cursor: pointer;
+	padding: 0;
+	width: 24px;
+	height: 24px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.loading-state {
+	text-align: center;
+	padding: 2rem;
+	color: rgba(255, 255, 255, 0.7);
+	font-size: 1.1rem;
 }

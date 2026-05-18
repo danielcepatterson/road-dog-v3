@@ -1,39 +1,20 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { apiClient, Show } from "../api/client";
 import "../App.css";
 
-interface Show {
-	id: string;
-	date: string;
-	venue: string;
-	venueAddress: string;
-	city: string;
-	state: string;
-	artist: string;
-	pocName: string;
-	pocPhone: string;
-	pocEmail: string;
-	loadInTime: string;
-	soundCheckTime: string;
-	doorsTime: string;
-	performanceTime: string;
-	ticketPrice: string;
-	parkingDetails: string;
-	backlineDrums: string;
-	backlineBass: string;
-	sound: string;
-	paymentAmount: string;
-	settlementType: string;
-	contract: string;
-	notes: string;
+interface BookingManagerProps {
+	onLogout: () => void;
 }
 
-function BookingManager() {
+function BookingManager({ onLogout }: BookingManagerProps) {
 	const [shows, setShows] = useState<Show[]>([]);
 	const [currentMonth, setCurrentMonth] = useState(new Date());
 	const [expandedShows, setExpandedShows] = useState<Set<string>>(new Set());
 	const [isFormExpanded, setIsFormExpanded] = useState(false);
 	const [editingId, setEditingId] = useState<string | null>(null);
+	const [isLoading, setIsLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 	const [formData, setFormData] = useState({
 		date: "",
 		venue: "",
@@ -59,20 +40,24 @@ function BookingManager() {
 		notes: "",
 	});
 
-	// Load shows from localStorage on mount
+	// Load shows from API on mount
 	useEffect(() => {
-		const savedShows = localStorage.getItem("bookedShows");
-		if (savedShows) {
-			setShows(JSON.parse(savedShows));
-		}
+		loadShows();
 	}, []);
 
-	// Save shows to localStorage whenever they change
-	useEffect(() => {
-		if (shows.length > 0) {
-			localStorage.setItem("bookedShows", JSON.stringify(shows));
+	const loadShows = async () => {
+		try {
+			setIsLoading(true);
+			setError(null);
+			const fetchedShows = await apiClient.getShows();
+			setShows(fetchedShows);
+		} catch (err) {
+			setError('Failed to load shows. Please try again.');
+			console.error('Error loading shows:', err);
+		} finally {
+			setIsLoading(false);
 		}
-	}, [shows]);
+	};
 
 	const handleInputChange = (
 		e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -81,58 +66,70 @@ function BookingManager() {
 		setFormData((prev) => ({ ...prev, [name]: value }));
 	};
 
-	const handleSubmit = (e: React.FormEvent) => {
+	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
-		if (editingId) {
-			// Update existing show
-			setShows((prev) =>
-				prev.map((show) =>
-					show.id === editingId ? { ...show, ...formData } : show
-				)
-			);
-			setEditingId(null);
-		} else {
-			// Create new show
-			const newShow: Show = {
-				id: Date.now().toString(),
-				...formData,
-			};
-			setShows((prev) => [...prev, newShow]);
+		setError(null);
+		
+		try {
+			if (editingId) {
+				// Update existing show
+				await apiClient.updateShow(editingId, formData);
+				setEditingId(null);
+			} else {
+				// Create new show
+				const newShow: Show = {
+					id: Date.now().toString(),
+					...formData,
+				};
+				await apiClient.createShow(newShow);
+			}
+			
+			// Reload shows from server
+			await loadShows();
+			
+			// Reset form
+			setFormData({
+				date: "",
+				venue: "",
+				venueAddress: "",
+				city: "",
+				state: "",
+				artist: "",
+				pocName: "",
+				pocPhone: "",
+				pocEmail: "",
+				loadInTime: "",
+				soundCheckTime: "",
+				doorsTime: "",
+				performanceTime: "",
+				ticketPrice: "",
+				parkingDetails: "",
+				backlineDrums: "",
+				backlineBass: "",
+				sound: "",
+				paymentAmount: "",
+				settlementType: "",
+				contract: "",
+				notes: "",
+			});
+			// Collapse form after submission
+			setIsFormExpanded(false);
+		} catch (err) {
+			setError('Failed to save show. Please try again.');
+			console.error('Error saving show:', err);
 		}
-		// Reset form
-		setFormData({
-			date: "",
-			venue: "",
-			venueAddress: "",
-			city: "",
-			state: "",
-			artist: "",
-			pocName: "",
-			pocPhone: "",
-			pocEmail: "",
-			loadInTime: "",
-			soundCheckTime: "",
-			doorsTime: "",
-			performanceTime: "",
-			ticketPrice: "",
-			parkingDetails: "",
-			backlineDrums: "",
-			backlineBass: "",
-			sound: "",
-			paymentAmount: "",
-			settlementType: "",
-			contract: "",
-			notes: "",
-		});
-		// Collapse form after submission
-		setIsFormExpanded(false);
 	};
 
-	const handleDelete = (id: string) => {
+	const handleDelete = async (id: string) => {
 		if (window.confirm("Are you sure you want to delete this show?")) {
-			setShows((prev) => prev.filter((show) => show.id !== id));
-			const updatedShows = shows.filter((show) => show.id !== id);
-			localStorage.setItem("bookedShows", JSON.stringify(updatedShows));
+			try {
+				setError(null);
+				await apiClient.deleteShow(id);
+				await loadShows();
+			} catch (err) {
+				setError('Failed to delete show. Please try again.');
+				console.error('Error deleting show:', err);
+			}
 		}
 	};
 
@@ -283,7 +280,10 @@ function BookingManager() {
 	return (
 		<div className="app-container">
 			<div className="page-header">
-				<Link to="/" className="back-link">← Back to Home</Link>
+				<div className="header-top">
+					<Link to="/" className="back-link">← Back to Home</Link>
+					<button onClick={onLogout} className="logout-btn-small">Logout</button>
+				</div>
 				<h1>booking manager</h1>
 			</div>
 			<button 
@@ -297,6 +297,13 @@ function BookingManager() {
 			>
 				{isFormExpanded ? '− Hide Form' : editingId ? '+ Edit Show' : '+ Add New Show'}
 			</button>
+
+		{error && (
+			<div className="error-banner">
+				{error}
+				<button onClick={() => setError(null)} className="error-close">×</button>
+			</div>
+		)}
 
 		{isFormExpanded && (
 			<div className="form-container">
@@ -601,7 +608,9 @@ function BookingManager() {
 
 			<div className="shows-container">
 				<h2>Booked Shows ({shows.length})</h2>
-				{shows.length === 0 ? (
+				{isLoading ? (
+					<p className="loading-state">Loading shows...</p>
+				) : shows.length === 0 ? (
 					<p className="empty-state">No shows booked yet. Add your first show above!</p>
 				) : (
 					<div className="shows-list">

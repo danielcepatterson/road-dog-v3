@@ -3,7 +3,9 @@
 	"name": "road-dog-v3",
 	"main": "./src/worker/index.ts",
 	"compatibility_date": "2025-10-08",
-	"compatibility_flags": ["nodejs_compat"],
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
 	"observability": {
 		"enabled": true
 	},
@@ -11,5 +13,11 @@
 	"assets": {
 		"directory": "./dist/client",
 		"not_found_handling": "single-page-application"
-	}
+	},
+	"kv_namespaces": [
+		{
+			"binding": "ROAD_DOG_KV",
+			"id": "b963c54657204fcb809873fe28d859ec"
+		}
+	]
 }

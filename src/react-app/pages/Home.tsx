@@ -1,9 +1,18 @@
 import { Link } from 'react-router-dom';
 import './Home.css';
 
-function Home() {
+interface HomeProps {
+	currentUser: string | null;
+	onLogout: () => void;
+}
+
+function Home({ currentUser, onLogout }: HomeProps) {
 	return (
 		<div className="home-container">
+			<div className="user-header">
+				<span className="welcome-text">Welcome, {currentUser}!</span>
+				<button onClick={onLogout} className="logout-btn">Logout</button>
+			</div>
 			<h1>Road Dog</h1>
 			<p className="home-subtitle">Your touring management hub</p>
 			
