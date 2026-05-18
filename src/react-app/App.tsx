@@ -285,7 +285,7 @@ function App() {
 
 	return (
 		<div className="app-container">
-			<h1>🎸 Show Booking Manager</h1>
+			<h1>booking manager</h1>
 			<button 
 				className="add-show-toggle-btn"
 				onClick={() => {
