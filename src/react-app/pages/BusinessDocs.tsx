@@ -230,7 +230,10 @@ function BusinessDocs({ onLogout }: BusinessDocsProps) {
 					<Link to="/" className="back-link">← Back to Home</Link>
 					<button onClick={onLogout} className="logout-btn-small">Logout</button>
 				</div>
-				<h1>business docs</h1>
+				<div className="title-with-logo">
+					<img src="/road-dog-logo.png" alt="Road Dog" className="logo-small" />
+					<h1>business docs</h1>
+				</div>
 				<p className="page-subtitle">oc3 / documents</p>
 			</div>
 

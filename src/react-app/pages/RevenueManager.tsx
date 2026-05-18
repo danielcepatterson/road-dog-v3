@@ -63,7 +63,10 @@ function RevenueManager({ onLogout }: RevenueManagerProps) {
 					<Link to="/" className="back-link">← Back to Home</Link>
 					<button onClick={onLogout} className="logout-btn-small">Logout</button>
 				</div>
-				<h1>revenue manager</h1>
+				<div className="title-with-logo">
+					<img src="/road-dog-logo.png" alt="Road Dog" className="logo-small" />
+					<h1>revenue manager</h1>
+				</div>
 			</div>
 
 			{error && (

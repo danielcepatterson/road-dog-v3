@@ -13,7 +13,10 @@ function Home({ currentUser, onLogout }: HomeProps) {
 				<span className="welcome-text">Welcome, {currentUser}!</span>
 				<button onClick={onLogout} className="logout-btn">Logout</button>
 			</div>
-			<h1>Road Dog</h1>
+			<div className="title-with-logo">
+				<img src="/road-dog-logo.png" alt="Road Dog" className="logo" />
+				<h1>Road Dog</h1>
+			</div>
 			<p className="home-subtitle">Your touring management hub</p>
 			
 			<div className="home-cards">

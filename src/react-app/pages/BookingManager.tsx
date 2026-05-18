@@ -284,7 +284,10 @@ function BookingManager({ onLogout }: BookingManagerProps) {
 					<Link to="/" className="back-link">← Back to Home</Link>
 					<button onClick={onLogout} className="logout-btn-small">Logout</button>
 				</div>
-				<h1>booking manager</h1>
+				<div className="title-with-logo">
+					<img src="/road-dog-logo.png" alt="Road Dog" className="logo-small" />
+					<h1>booking manager</h1>
+				</div>
 			</div>
 			<button 
 				className="add-show-toggle-btn"

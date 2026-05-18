@@ -41,6 +41,19 @@
 	font-weight: 700;
 }
 
+.title-with-logo {
+	display: flex;
+	align-items: center;
+	gap: 1.5rem;
+	justify-content: center;
+}
+
+.logo {
+	height: 120px;
+	width: auto;
+	filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
 .home-subtitle {
 	font-size: 1.5rem;
 	color: rgba(255, 255, 255, 0.7);
