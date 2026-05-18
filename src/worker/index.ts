@@ -158,6 +158,38 @@ app.delete("/api/shows/:id", authenticate, async (c) => {
 	}
 });
 
+// Get documents structure
+app.get("/api/documents", authenticate, async (c) => {
+	try {
+		const docsData = await c.env.ROAD_DOG_KV.get('documents');
+		const documents = docsData ? JSON.parse(docsData) : { folders: [], files: {} };
+		return c.json(documents);
+	} catch (error) {
+		return c.json({ error: 'Failed to fetch documents' }, 500);
+	}
+});
+
+// Update documents structure
+app.put("/api/documents", authenticate, async (c) => {
+	try {
+		const username = c.get('username');
+		const { folders, files } = await c.req.json();
+
+		const documents = {
+			folders,
+			files,
+			updatedBy: username,
+			updatedAt: new Date().toISOString()
+		};
+
+		await c.env.ROAD_DOG_KV.put('documents', JSON.stringify(documents));
+		
+		return c.json({ success: true });
+	} catch (error) {
+		return c.json({ error: 'Failed to update documents' }, 500);
+	}
+});
+
 app.get("/api/", (c) => c.json({ name: "Road Dog API", version: "1.0" }));
 
 export default app;
