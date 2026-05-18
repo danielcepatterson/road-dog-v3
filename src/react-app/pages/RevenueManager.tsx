@@ -64,7 +64,7 @@ function RevenueManager({ onLogout }: RevenueManagerProps) {
 					<button onClick={onLogout} className="logout-btn-small">Logout</button>
 				</div>
 				<div className="title-with-logo">
-					<img src="/road-dog-logo.png" alt="Road Dog" className="logo-small" />
+					<img src="/road-dog-logo.jpg" alt="Road Dog" className="logo-small" />
 					<h1>revenue manager</h1>
 				</div>
 			</div>

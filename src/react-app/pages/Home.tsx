@@ -14,7 +14,7 @@ function Home({ currentUser, onLogout }: HomeProps) {
 				<button onClick={onLogout} className="logout-btn">Logout</button>
 			</div>
 			<div className="title-with-logo">
-				<img src="/road-dog-logo.png" alt="Road Dog" className="logo" />
+				<img src="/road-dog-logo.jpg" alt="Road Dog" className="logo" />
 				<h1>Road Dog</h1>
 			</div>
 			<p className="home-subtitle">Your touring management hub</p>

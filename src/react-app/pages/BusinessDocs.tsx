@@ -231,7 +231,7 @@ function BusinessDocs({ onLogout }: BusinessDocsProps) {
 					<button onClick={onLogout} className="logout-btn-small">Logout</button>
 				</div>
 				<div className="title-with-logo">
-					<img src="/road-dog-logo.png" alt="Road Dog" className="logo-small" />
+					<img src="/road-dog-logo.jpg" alt="Road Dog" className="logo-small" />
 					<h1>business docs</h1>
 				</div>
 				<p className="page-subtitle">oc3 / documents</p>
