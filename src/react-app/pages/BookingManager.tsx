@@ -624,7 +624,16 @@ function BookingManager({ onLogout }: BookingManagerProps) {
 									<div className="show-header" onClick={() => toggleShowExpanded(show.id)}>
 									<div className="show-title">
 										<span className="expand-icon">{expandedShows.has(show.id) ? '▼' : '▶'}</span>
+									<div className="show-title-content">
 										<h3>{show.artist} @ {show.venue}</h3>
+										<span className="show-date-preview">
+											{new Date(show.date + "T00:00:00").toLocaleDateString("en-US", {
+												month: "short",
+												day: "numeric",
+												year: "numeric",
+											})}
+										</span>
+									</div>
 									</div>
 									<div className="show-actions">
 										<button

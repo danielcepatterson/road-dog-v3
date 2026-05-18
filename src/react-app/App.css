@@ -262,6 +262,19 @@ form {
 	flex: 1;
 }
 
+.show-title-content {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	flex: 1;
+}
+
+.show-date-preview {
+	font-size: 0.9rem;
+	color: rgba(255, 255, 255, 0.6);
+	font-weight: 400;
+}
+
 .expand-icon {
 	font-size: 0.8rem;
 	color: #646cff;
