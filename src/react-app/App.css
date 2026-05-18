@@ -135,6 +135,23 @@ form {
 	background: #535bf2;
 }
 
+.cancel-btn {
+	margin-top: 1rem;
+	padding: 1rem 2rem;
+	background: rgba(255, 255, 255, 0.1);
+	color: #fff;
+	border: 1px solid rgba(255, 255, 255, 0.2);
+	border-radius: 6px;
+	font-size: 1rem;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.cancel-btn:hover {
+	background: rgba(255, 255, 255, 0.15);
+}
+
 .shows-container {
 	margin-top: 3rem;
 }
@@ -202,6 +219,35 @@ form {
 	margin: 0;
 	font-size: 1.5rem;
 	color: #646cff;
+}
+
+.show-actions {
+	display: flex;
+	gap: 0.5rem;
+	align-items: center;
+}
+
+.edit-btn {
+	background: rgba(100, 108, 255, 0.2);
+	color: #646cff;
+	border: none;
+	width: 32px;
+	height: 32px;
+	border-radius: 6px;
+	font-size: 1.2rem;
+	cursor: pointer;
+	line-height: 1;
+	transition: background-color 0.3s;
+	padding: 0;
+	z-index: 10;
+	position: relative;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.edit-btn:hover {
+	background: rgba(100, 108, 255, 0.4);
 }
 
 .delete-btn {

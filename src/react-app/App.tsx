@@ -34,6 +34,7 @@ function App() {
 	const [currentMonth, setCurrentMonth] = useState(new Date());
 	const [expandedShows, setExpandedShows] = useState<Set<string>>(new Set());
 	const [isFormExpanded, setIsFormExpanded] = useState(false);
+	const [editingId, setEditingId] = useState<string | null>(null);
 	const [formData, setFormData] = useState({
 		date: "",
 		venue: "",
@@ -83,11 +84,22 @@ function App() {
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
-		const newShow: Show = {
-			id: Date.now().toString(),
-			...formData,
-		};
-		setShows((prev) => [...prev, newShow]);
+		if (editingId) {
+			// Update existing show
+			setShows((prev) =>
+				prev.map((show) =>
+					show.id === editingId ? { ...show, ...formData } : show
+				)
+			);
+			setEditingId(null);
+		} else {
+			// Create new show
+			const newShow: Show = {
+				id: Date.now().toString(),
+				...formData,
+			};
+			setShows((prev) => [...prev, newShow]);
+		}
 		// Reset form
 		setFormData({
 			date: "",
@@ -118,9 +130,69 @@ function App() {
 	};
 
 	const handleDelete = (id: string) => {
-		setShows((prev) => prev.filter((show) => show.id !== id));
-		const updatedShows = shows.filter((show) => show.id !== id);
-		localStorage.setItem("bookedShows", JSON.stringify(updatedShows));
+		if (window.confirm("Are you sure you want to delete this show?")) {
+			setShows((prev) => prev.filter((show) => show.id !== id));
+			const updatedShows = shows.filter((show) => show.id !== id);
+			localStorage.setItem("bookedShows", JSON.stringify(updatedShows));
+		}
+	};
+
+	const handleEdit = (show: Show) => {
+		setFormData({
+			date: show.date,
+			venue: show.venue,
+			venueAddress: show.venueAddress,
+			city: show.city,
+			state: show.state,
+			artist: show.artist,
+			pocName: show.pocName,
+			pocPhone: show.pocPhone,
+			pocEmail: show.pocEmail,
+			loadInTime: show.loadInTime,
+			soundCheckTime: show.soundCheckTime,
+			doorsTime: show.doorsTime,
+			performanceTime: show.performanceTime,
+			ticketPrice: show.ticketPrice,
+			parkingDetails: show.parkingDetails,
+			backlineDrums: show.backlineDrums,
+			backlineBass: show.backlineBass,
+			sound: show.sound,
+			paymentAmount: show.paymentAmount,
+			settlementType: show.settlementType,
+			contract: show.contract,
+			notes: show.notes,
+		});
+		setEditingId(show.id);
+		setIsFormExpanded(true);
+		window.scrollTo({ top: 0, behavior: "smooth" });
+	};
+
+	const handleCancelEdit = () => {
+		setEditingId(null);
+		setFormData({
+			date: "",
+			venue: "",
+			venueAddress: "",
+			city: "",
+			state: "",
+			artist: "",
+			pocName: "",
+			pocPhone: "",
+			pocEmail: "",
+			loadInTime: "",
+			soundCheckTime: "",
+			doorsTime: "",
+			performanceTime: "",
+			ticketPrice: "",
+			parkingDetails: "",
+			backlineDrums: "",
+			backlineBass: "",
+			sound: "",
+			paymentAmount: "",
+			settlementType: "",
+			contract: "",
+			notes: "",
+		});
 	};
 
 	const toggleShowExpanded = (id: string) => {
@@ -216,14 +288,19 @@ function App() {
 			<h1>🎸 Show Booking Manager</h1>
 			<button 
 				className="add-show-toggle-btn"
-				onClick={() => setIsFormExpanded(!isFormExpanded)}
+				onClick={() => {
+					if (isFormExpanded && editingId) {
+						handleCancelEdit();
+					}
+					setIsFormExpanded(!isFormExpanded);
+				}}
 			>
-				{isFormExpanded ? '− Hide Form' : '+ Add New Show'}
+				{isFormExpanded ? '− Hide Form' : editingId ? '+ Edit Show' : '+ Add New Show'}
 			</button>
 
 		{isFormExpanded && (
 			<div className="form-container">
-				<h2>Add New Show</h2>
+				<h2>{editingId ? 'Edit Show' : 'Add New Show'}</h2>
 				<form onSubmit={handleSubmit}>
 					<div className="form-section">
 						<h3>Basic Information</h3>
@@ -510,9 +587,20 @@ function App() {
 						</div>
 					</div>
 
-					<button type="submit" className="submit-btn">
-						Add Show
-					</button>
+					<div style={{ display: "flex", gap: "10px" }}>
+						<button type="submit" className="submit-btn">
+							{editingId ? "Update Show" : "Add Show"}
+						</button>
+						{editingId && (
+							<button
+								type="button"
+								className="cancel-btn"
+								onClick={handleCancelEdit}
+							>
+								Cancel
+							</button>
+						)}
+					</div>
 				</form>
 			</div>
 			)}
@@ -532,16 +620,28 @@ function App() {
 										<span className="expand-icon">{expandedShows.has(show.id) ? '▼' : '▶'}</span>
 										<h3>{show.artist} @ {show.venue}</h3>
 									</div>
+								<div className="show-actions">
+									<button
+										className="edit-btn"
+										onClick={(e) => {
+											e.stopPropagation();
+											handleEdit(show);
+										}}
+										aria-label="Edit show"
+									>
+										✏️
+									</button>
 									<button
 										className="delete-btn"
 										onClick={(e) => {
 											e.stopPropagation();
 											handleDelete(show.id);
 										}}
-											aria-label="Delete show"
-										>
-											×
-										</button>
+										aria-label="Delete show"
+									>
+										×
+									</button>
+								</div>
 									</div>
 						{expandedShows.has(show.id) && (
 							<div className="show-details">
